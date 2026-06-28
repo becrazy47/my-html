@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>나의 가치 여정</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            --primary-purple: #6c5ce7;
+            --secondary-pink: #ff7675;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --border-color: #dfe6e9;
+        }
+
+        /* 모바일 전체 화면 최적화 */
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 스마트폰 가로폭에 맞춘 트렌디한 카드 레이아웃 */
+        .container {
+            width: 100%;
+            max-width: 480px; /* 모바일 세로 화면 기준 딱 좋은 크기 */
+            min-height: 100vh;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px 20px 40px 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step-container {
+            display: none;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .step-container.active {
+            display: flex;
+        }
+
+        /* 감각적인 타이포그래피 */
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-top: 10px;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, var(--primary-purple), #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-bottom: 24px;
+            line-height: 1.6;
+            word-break: keep-all;
+        }
+
+        /* 요즘 스타일의 둥근 카운터 칩 */
+        .counter {
+            align-self: flex-start;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+            background: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        .counter span {
+            color: var(--primary-purple);
+        }
+
+        /* 모바일 터치에 최적화된 3열 그리드 */
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* 힙한 감성의 단어 아이템 디자인 */
+        .word-item {
+            padding: 16px 8px;
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+        }
+
+        /* 1, 3단계 선택 시: 통통 튀는 네온 퍼플 */
+        .word-item.selected {
+            background: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+            font-weight: 700;
+            transform: scale(0.96);
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+        }
+
+        /* 2, 4단계 제거(취소선) 시: 힙하게 흐려지는 효과 */
+        .word-item.removed {
+            background-color: #f1f2f6;
+            color: #b2bec3;
+            border-color: #dfe6e9;
+            text-decoration: line-through;
+            transform: scale(0.96);
+        }
+
+        /* 하단 고정형 볼륨감 있는 버튼 */
+        .btn-wrap {
+            margin-top: auto; /* 버튼을 항상 화면 하단에 위치시킴 */
+            padding-top: 20px;
+        }
+
+        .btn-next {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: #eee;
+            color: #aaa;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: not-allowed;
+            transition: all 0.3s ease;
+        }
+
+        /* 활성화되었을 때 그라데이션 및 입체감 */
+        .btn-next.enabled {
+            background: linear-gradient(135deg, var(--primary-purple) 0%, #a29bfe 100%);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.3);
+        }
+        
+        .btn-next.enabled:active {
+            transform: scale(0.98);
+        }
+
+        /* 5단계 최종 결과 카드 디자인 */
+        .result-section {
+            margin-top: 20px;
+            padding: 24px;
+            border-radius: 20px;
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+        }
+
+        .result-section h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .result-words {
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1.6;
+            color: var(--text-main);
+            word-break: keep-all;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- [1단계] -->
+    <div id="step1" class="step-container active">
+        <h2>[1단계]<br>나에게 울림이 있는 단어 10개를 골라주세요.</h2>
+        <div class="counter">선택 <span id="count1">0</span>/10</div>
+        <div class="word-grid" id="grid1"></div>
+        <div class="btn-wrap">
+            <button class="btn-next" id="btn1" onclick="goStep2()" disabled>다음 단계로</button>
+        </div>
+    </div>
+
+    <!-- [2단계] -->
+    <div id="step2" class="step-container">
+        <h2>[2단계]<br>10개 중 5개를 내려놓아 주세요.</h2>
+        <div class="description">지금 당장 내게 꼭 필요하지 않은 단어를 내려놓아 보세요.</div>
+        <div class="counter">제거 <span id="count2">0</span>/5</div>
+        <div class="word-grid" id="grid2"></div>
+        <div class="btn-wrap">
+            <button class="btn-next" id="btn2" onclick="goStep3()" disabled>다음 단계로</button>
+        </div>
+    </div>
+
+    <!-- [3단계] -->
+    <div id="step3" class="step-container">
+        <h2>[3단계]<br>마이너스 에너지</h2>
+        <div class="description">
+            원하지 않거나 극복하고 싶은 단어를 10개 골라주세요.<br>
+            지금 나를 힘들게 하거나, 내 안에 있지만 벗어나고 싶은 에너지들입니다. 외면하지 않고 직면하는 것이 변화의 시작입니다.
+        </div>
+        <div class="counter">선택 <span id="count3">0</span>/10</div>
+        <div class="word-grid" id="grid3"></div>
+        <div class="btn-wrap">
+            <button class="btn-next" id="btn3" onclick="goStep4()" disabled>다음 단계로</button>
+        </div>
+    </div>
+
+    <!-- [4단계] -->
+    <div id="step4" class="step-container">
+        <h2>[4단계]<br>10개 중 5개를 내려놓아 주세요.</h2>
+        <div class="description">지금 당장 내가 마주하고 싶은 과제 5개만 남겨주세요. (제거할 단어 5개 선택)</div>
+        <div class="counter">제거 <span id="count4">0</span>/5</div>
+        <div class="word-grid" id="grid4"></div>
+        <div class="btn-wrap">
+            <button class="btn-next" id="btn4" onclick="goStep5()" disabled>다음 단계로</button>
+        </div>
+    </div>
+
+    <!-- [5단계] 결과 -->
+    <div id="step5" class="step-container">
+        <h2 style="margin-bottom: 20px;">[5단계]<br>당신의 여정이 완성되었습니다.</h2>
+        
+        <div class="result-section">
+            <h3 style="color: var(--primary-purple);">✨ 나의 핵심가치 5</h3>
+            <div class="result-words" id="final-core-values"></div>
+        </div>
+
+        <div class="result-section" style="margin-top:16px;">
+            <h3 style="color: var(--secondary-pink);">🔥 나의 극복과제 5</h3>
+            <div class="result-words" id="final-challenges"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const wordsStep1 = ["감사", "겸손", "공감", "꿈", "리더십", "믿음", "배려", "사랑", "사명", "생명", "섬김", "성실", "성장", "성취", "신뢰", "신앙", "실행력", "안전", "열정", "용기", "우정", "유연성", "인내", "자비", "자신감", "자유", "자율성", "절제", "정의", "조화", "존경", "지혜", "진실", "질서", "창의성", "청렴", "평화", "행복", "협력", "희망"];
+    const wordsStep3 = ["갈등", "강요", "거짓", "게으름", "결핍", "경솔", "경직", "공허", "교만", "낡음", "낭비", "냉정함", "독단", "두려움", "모방", "무관심", "무기력", "무례", "무시", "무질서", "무책임", "반항", "방관", "배신", "변덕", "복수", "부패", "분노", "분주함", "불균형", "불신", "불안", "불의", "불친절", "불평", "불행", "소외", "수동성", "수치", "슬픔", "시기", "시련", "실패", "약점", "어리석음", "열등감", "우유부단", "위법", "위협", "의심", "이기심", "잔인함", "절망", "조급함", "조롱", "죽음", "중독", "지루함", "지배", "집착", "탐욕", "편견", "포기", "폭력", "허영", "혼란", "회피"];
+
+    let selectedStep1 = [];
+    let removedStep2 = [];
+    let selectedStep3 = [];
+    let removedStep4 = [];
+
+    function init() {
+        renderGrid("grid1", wordsStep1, handleStep1Select);
+    }
+
+    function renderGrid(gridId, words, clickHandler) {
+        const grid = document.getElementById(gridId);
+        grid.innerHTML = "";
+        words.forEach(word => {
+            const div = document.createElement("div");
+            div.className = "word-item";
+            div.textContent = word;
+            div.addEventListener("click", () => clickHandler(div, word));
+            grid.appendChild(div);
+        });
+    }
+
+    function handleStep1Select(element, word) {
+        if (element.classList.contains("selected")) {
+            element.classList.remove("selected");
+            selectedStep1 = selectedStep1.filter(w => w !== word);
+        } else {
+            if (selectedStep1.length >= 10) return;
+            element.classList.add("selected");
+            selectedStep1.push(word);
+        }
+        document.getElementById("count1").textContent = selectedStep1.length;
+        toggleButton("btn1", selectedStep1.length === 10);
+    }
+
+    function handleStep2Select(element, word) {
+        if (element.classList.contains("removed")) {
+            element.classList.remove("removed");
+            removedStep2 = removedStep2.filter(w => w !== word);
+        } else {
+            if (removedStep2.length >= 5) return;
+            element.classList.add("removed");
+            removedStep2.push(word);
+        }
+        document.getElementById("count2").textContent = removedStep2.length;
+        toggleButton("btn2", removedStep2.length === 5);
+    }
+
+    function handleStep3Select(element, word) {
+        if (element.classList.contains("selected")) {
+            element.classList.remove("selected");
+            selectedStep3 = selectedStep3.filter(w => w !== word);
+        } else {
+            if (selectedStep3.length >= 10) return;
+            element.classList.add("selected");
+            selectedStep3.push(word);
+        }
+        document.getElementById("count3").textContent = selectedStep3.length;
+        toggleButton("btn3", selectedStep3.length === 10);
+    }
+
+    function handleStep4Select(element, word) {
+        if (element.classList.contains("removed")) {
+            element.classList.remove("removed");
+            removedStep4 = removedStep4.filter(w => w !== word);
+        } else {
+            if (removedStep4.length >= 5) return;
+            element.classList.add("removed");
+            removedStep4.push(word);
+        }
+        document.getElementById("count4").textContent = removedStep4.length;
+        toggleButton("btn4", removedStep4.length === 5);
+    }
+
+    function toggleButton(btnId, isEnabled) {
+        const btn = document.getElementById(btnId);
+        if (isEnabled) {
+            btn.classList.add("enabled");
+            btn.disabled = false;
+        } else {
+            btn.classList.remove("enabled");
+            btn.disabled = true;
+        }
+    }
+
+    function goStep2() {
+        if (selectedStep1.length !== 10) return;
+        switchPage("step1", "step2");
+        renderGrid("grid2", selectedStep1, handleStep2Select);
+    }
+
+    function goStep3() {
+        if (removedStep2.length !== 5) return;
+        switchPage("step2", "step3");
+        renderGrid("grid3", wordsStep3, handleStep3Select);
+    }
+
+    function goStep4() {
+        if (selectedStep3.length !== 10) return;
+        switchPage("step3", "step4");
+        renderGrid("grid4", selectedStep3, handleStep4Select);
+    }
+
+    function goStep5() {
+        if (removedStep4.length !== 5) return;
+        switchPage("step4", "step5");
+
+        const finalCoreValues = selectedStep1.filter(w => !removedStep2.includes(w));
+        const finalChallenges = selectedStep3.filter(w => !removedStep4.includes(w));
+
+        document.getElementById("final-core-values").textContent = finalCoreValues.join(" · ");
+        document.getElementById("final-challenges").textContent = finalChallenges.join(" · ");
+    }
+
+    function switchPage(fromId, toId) {
+        document.getElementById(fromId).classList.remove("active");
+        document.getElementById(toId).classList.add("active");
+        window.scrollTo(0, 0);
+    }
+
+    init();
+</script>
+</body>
+</html>
