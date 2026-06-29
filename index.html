@@ -6,21 +6,18 @@
     <title>나의 가치 여정</title>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            --primary-purple: #6c5ce7;
-            --secondary-pink: #ff7675;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --text-main: #2d3436;
-            --text-sub: #636e72;
-            --border-color: #dfe6e9;
+            --bg-gradient: linear-gradient(135deg, #f5f3ff 0%, #edd8ff 100%);
+            --primary-purple: #7c3aed;
+            --light-purple: #a78bfa;
+            --point-pink: #f43f5e;
+            --card-bg: rgba(255, 255, 255, 0.45); 
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --border-color: #cbd5e1;
         }
 
-        /* 모바일 전체 화면 최적화 */
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main);
             margin: 0;
             padding: 0;
             display: flex;
@@ -28,21 +25,29 @@
             align-items: flex-start;
             min-height: 100vh;
             -webkit-tap-highlight-color: transparent;
+            position: relative;
+            
+            /* 📌 패턴 폭을 180px로 슬림하게 줄여 가로 모드에서도 3번 이상 엇갈려 반복되도록 마스터링 */
+            background: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='325' height='200' viewBox='50 35 150 100'%3E%3Cstyle%3E.txt%7Bfont-family:'Pretendard',sans-serif;font-size:11px;font-weight:900;fill:%237c3aed;fill-opacity:0.13;%7D%3C/style%3E%3Cg transform='rotate(-10 90 45)'%3E%3Ctext x='-20' y='25' class='txt'%3E경산권 7월 창가청년미래총회%3C/text%3E%3Ctext x='70' y='70' class='txt'%3E경산권 7월 창가청년미래총회%3C/text%3E%3C/g%3E%3C/svg%3E"),
+                var(--bg-gradient);
+            background-attachment: fixed;
         }
 
-        /* 스마트폰 가로폭에 맞춘 트렌디한 카드 레이아웃 */
         .container {
             width: 100%;
-            max-width: 480px; /* 모바일 세로 화면 기준 딱 좋은 크기 */
+            max-width: 480px;
             min-height: 100vh;
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 30px 20px 40px 20px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            padding: 40px 24px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.05);
         }
 
         .step-container {
@@ -55,89 +60,81 @@
             display: flex;
         }
 
-        /* 감각적인 타이포그래피 */
         h2 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 800;
             line-height: 1.4;
-            margin-top: 10px;
+            margin-top: 0;
             margin-bottom: 8px;
             letter-spacing: -0.5px;
-            background: linear-gradient(to right, var(--primary-purple), #a29bfe);
+            background: linear-gradient(to right, var(--primary-purple), var(--light-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .description {
+        .sub-description {
             font-size: 0.9rem;
+            font-weight: 500;
             color: var(--text-sub);
             margin-bottom: 24px;
             line-height: 1.6;
             word-break: keep-all;
         }
 
-        /* 요즘 스타일의 둥근 카운터 칩 */
         .counter {
             align-self: flex-start;
             font-weight: 700;
             font-size: 0.85rem;
-            margin-bottom: 24px;
-            background: #fff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        }
-        
-        .counter span {
+            margin-bottom: 28px;
+            background: #ffffff;
             color: var(--primary-purple);
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
         }
 
-        /* 모바일 터치에 최적화된 3열 그리드 */
         .word-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
-        /* 힙한 감성의 단어 아이템 디자인 */
         .word-item {
-            padding: 16px 8px;
-            background-color: #fff;
+            padding: 16px 6px;
+            background-color: rgba(255, 255, 255, 0.9); 
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 14px;
             text-align: center;
             cursor: pointer;
             user-select: none;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 0.9rem;
-            font-weight: 500;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+            font-weight: 600;
+            color: var(--text-main);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
         }
 
-        /* 1, 3단계 선택 시: 통통 튀는 네온 퍼플 */
         .word-item.selected {
-            background: var(--primary-purple);
-            color: white;
-            border-color: var(--primary-purple);
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--light-purple) 100%);
+            color: #ffffff;
+            border-color: transparent;
             font-weight: 700;
             transform: scale(0.96);
-            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+            box-shadow: 0 6px 15px rgba(124, 58, 237, 0.25);
         }
 
-        /* 2, 4단계 제거(취소선) 시: 힙하게 흐려지는 효과 */
         .word-item.removed {
-            background-color: #f1f2f6;
-            color: #b2bec3;
-            border-color: #dfe6e9;
+            background-color: #f1f5f9;
+            color: #94a3b8;
+            border-color: #e2e8f0;
             text-decoration: line-through;
             transform: scale(0.96);
         }
 
-        /* 하단 고정형 볼륨감 있는 버튼 */
         .btn-wrap {
-            margin-top: auto; /* 버튼을 항상 화면 하단에 위치시킴 */
+            margin-top: auto;
             padding-top: 20px;
         }
 
@@ -145,47 +142,46 @@
             display: block;
             width: 100%;
             padding: 18px;
-            background: #eee;
-            color: #aaa;
+            background: #e2e8f0;
+            color: #94a3b8;
             border: none;
-            border-radius: 16px;
+            border-radius: 18px;
             font-size: 1.05rem;
             font-weight: 700;
             cursor: not-allowed;
             transition: all 0.3s ease;
         }
 
-        /* 활성화되었을 때 그라데이션 및 입체감 */
         .btn-next.enabled {
-            background: linear-gradient(135deg, var(--primary-purple) 0%, #a29bfe 100%);
-            color: #fff;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--light-purple) 100%);
+            color: #ffffff;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.3);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25);
         }
         
         .btn-next.enabled:active {
             transform: scale(0.98);
         }
 
-        /* 5단계 최종 결과 카드 디자인 */
         .result-section {
             margin-top: 20px;
             padding: 24px;
             border-radius: 20px;
-            background-color: #fff;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+            background-color: #ffffff;
+            border: 1px solid rgba(124, 58, 237, 0.15);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
         }
 
         .result-section h3 {
             margin-top: 0;
             margin-bottom: 16px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 800;
+            letter-spacing: -0.3px;
         }
 
         .result-words {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 700;
             line-height: 1.6;
             color: var(--text-main);
@@ -197,55 +193,51 @@
 
 <div class="container">
 
-    <!-- [1단계] -->
     <div id="step1" class="step-container active">
         <h2>[1단계]<br>나에게 울림이 있는 단어 10개를 골라주세요.</h2>
-        <div class="counter">선택 <span id="count1">0</span>/10</div>
+        <div class="sub-description">나를 표현하거나 내가 추구하는 단어를 선택해주세요.</div>
+        <div class="counter">선택된 가치 <span id="count1">0</span> / 10</div>
         <div class="word-grid" id="grid1"></div>
         <div class="btn-wrap">
             <button class="btn-next" id="btn1" onclick="goStep2()" disabled>다음 단계로</button>
         </div>
     </div>
 
-    <!-- [2단계] -->
     <div id="step2" class="step-container">
         <h2>[2단계]<br>10개 중 5개를 내려놓아 주세요.</h2>
-        <div class="description">지금 당장 내게 꼭 필요하지 않은 단어를 내려놓아 보세요.</div>
-        <div class="counter">제거 <span id="count2">0</span>/5</div>
+        <div class="sub-description">지금 당장 내게 꼭 필요하지 않은 단어를 내려놓아 보세요.</div>
+        <div class="counter">내려놓은 가치 <span id="count2">0</span> / 5</div>
         <div class="word-grid" id="grid2"></div>
         <div class="btn-wrap">
             <button class="btn-next" id="btn2" onclick="goStep3()" disabled>다음 단계로</button>
         </div>
     </div>
 
-    <!-- [3단계] -->
     <div id="step3" class="step-container">
         <h2>[3단계]<br>마이너스 에너지</h2>
-        <div class="description">
+        <div class="sub-description">
             원하지 않거나 극복하고 싶은 단어를 10개 골라주세요.<br>
             지금 나를 힘들게 하거나, 내 안에 있지만 벗어나고 싶은 에너지들입니다. 외면하지 않고 직면하는 것이 변화의 시작입니다.
         </div>
-        <div class="counter">선택 <span id="count3">0</span>/10</div>
+        <div class="counter">선택된 에너지 <span id="count3">0</span> / 10</div>
         <div class="word-grid" id="grid3"></div>
         <div class="btn-wrap">
             <button class="btn-next" id="btn3" onclick="goStep4()" disabled>다음 단계로</button>
         </div>
     </div>
 
-    <!-- [4단계] -->
     <div id="step4" class="step-container">
         <h2>[4단계]<br>10개 중 5개를 내려놓아 주세요.</h2>
-        <div class="description">지금 당장 내가 마주하고 싶은 과제 5개만 남겨주세요. (제거할 단어 5개 선택)</div>
-        <div class="counter">제거 <span id="count4">0</span>/5</div>
+        <div class="sub-description">지금 당장 내가 마주하고 싶은 과제 5개만 남겨주세요. (제거할 단어 5개 선택)</div>
+        <div class="counter">내려놓은 에너지 <span id="count4">0</span> / 5</div>
         <div class="word-grid" id="grid4"></div>
         <div class="btn-wrap">
             <button class="btn-next" id="btn4" onclick="goStep5()" disabled>다음 단계로</button>
         </div>
     </div>
 
-    <!-- [5단계] 결과 -->
     <div id="step5" class="step-container">
-        <h2 style="margin-bottom: 20px;">[5단계]<br>당신의 여정이 완성되었습니다.</h2>
+        <h2 style="margin-bottom: 24px;">[5단계]<br>당신의 여정이 완성되었습니다.</h2>
         
         <div class="result-section">
             <h3 style="color: var(--primary-purple);">✨ 나의 핵심가치 5</h3>
@@ -253,7 +245,7 @@
         </div>
 
         <div class="result-section" style="margin-top:16px;">
-            <h3 style="color: var(--secondary-pink);">🔥 나의 극복과제 5</h3>
+            <h3 style="color: var(--point-pink);">🔥 나의 극복과제 5</h3>
             <div class="result-words" id="final-challenges"></div>
         </div>
     </div>
@@ -261,16 +253,25 @@
 </div>
 
 <script>
-    const wordsStep1 = ["감사", "겸손", "공감", "꿈", "리더십", "믿음", "배려", "사랑", "사명", "생명", "섬김", "성실", "성장", "성취", "신뢰", "신앙", "실행력", "안전", "열정", "용기", "우정", "유연성", "인내", "자비", "자신감", "자유", "자율성", "절제", "정의", "조화", "존경", "지혜", "진실", "질서", "창의성", "청렴", "평화", "행복", "협력", "희망"];
-    const wordsStep3 = ["갈등", "강요", "거짓", "게으름", "결핍", "경솔", "경직", "공허", "교만", "낡음", "낭비", "냉정함", "독단", "두려움", "모방", "무관심", "무기력", "무례", "무시", "무질서", "무책임", "반항", "방관", "배신", "변덕", "복수", "부패", "분노", "분주함", "불균형", "불신", "불안", "불의", "불친절", "불평", "불행", "소외", "수동성", "수치", "슬픔", "시기", "시련", "실패", "약점", "어리석음", "열등감", "우유부단", "위법", "위협", "의심", "이기심", "잔인함", "절망", "조급함", "조롱", "죽음", "중독", "지루함", "지배", "집착", "탐욕", "편견", "포기", "폭력", "허영", "혼란", "회피"];
+    const wordsStep1 = ["감사", "겸손", "공감", "꿈", "리더십", "믿음", "배려", "사랑", "사명", "생명", "성실", "성장", "성취", "신뢰", "신앙", "실행력", "안전", "열정", "용기", "우정", "유연성", "인내", "자비", "자신감", "자유", "자율성", "절제", "정의", "조화", "존경", "지혜", "진실", "질서", "창의성", "청렴", "평화", "행복", "협력", "희망"];
+    const wordsStep3 = ["갈등", "거짓", "게으름", "결핍", "경솔", "경직", "공허", "교만", "낭비", "냉정함", "독단", "두려움", "모방", "무관심", "무기력", "무시", "무질서", "무책임", "반항", "방관", "배신", "변덕", "복수", "부패", "분노", "불균형", "불신", "불안", "불친절", "불행", "소외", "수동성", "수치", "슬픔", "시기", "시련", "실패", "약점", "어리석음", "열등감", "우유부단", "위협", "의심", "이기심", "잔인함", "절망", "조급함", "조롱", "죽음", "중독", "지루함", "지배", "집착", "탐욕", "편견", "포기", "폭력", "허영", "혼란", "회피"];
 
     let selectedStep1 = [];
     let removedStep2 = [];
     let selectedStep3 = [];
     let removedStep4 = [];
 
+    function shuffle(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+
     function init() {
-        renderGrid("grid1", wordsStep1, handleStep1Select);
+        renderGrid("grid1", shuffle(wordsStep1), handleStep1Select);
     }
 
     function renderGrid(gridId, words, clickHandler) {
@@ -357,7 +358,7 @@
     function goStep3() {
         if (removedStep2.length !== 5) return;
         switchPage("step2", "step3");
-        renderGrid("grid3", wordsStep3, handleStep3Select);
+        renderGrid("grid3", shuffle(wordsStep3), handleStep3Select);
     }
 
     function goStep4() {
@@ -373,8 +374,8 @@
         const finalCoreValues = selectedStep1.filter(w => !removedStep2.includes(w));
         const finalChallenges = selectedStep3.filter(w => !removedStep4.includes(w));
 
-        document.getElementById("final-core-values").textContent = finalCoreValues.join(" · ");
-        document.getElementById("final-challenges").textContent = finalChallenges.join(" · ");
+        document.getElementById("final-core-values").textContent = finalCoreValues.join("  ·  ");
+        document.getElementById("final-challenges").textContent = finalChallenges.join("  ·  ");
     }
 
     function switchPage(fromId, toId) {
