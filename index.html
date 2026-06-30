@@ -27,9 +27,8 @@
             -webkit-tap-highlight-color: transparent;
             position: relative;
             
-            /* 📌 패턴 폭을 180px로 슬림하게 줄여 가로 모드에서도 3번 이상 엇갈려 반복되도록 마스터링 */
             background: 
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='325' height='200' viewBox='50 35 150 100'%3E%3Cstyle%3E.txt%7Bfont-family:'Pretendard',sans-serif;font-size:11px;font-weight:900;fill:%237c3aed;fill-opacity:0.13;%7D%3C/style%3E%3Cg transform='rotate(-10 90 45)'%3E%3Ctext x='-20' y='25' class='txt'%3E경산권 7월 창가청년미래총회%3C/text%3E%3Ctext x='70' y='70' class='txt'%3E경산권 7월 창가청년미래총회%3C/text%3E%3C/g%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='90' viewBox='0 0 180 90'%3E%3Cstyle%3E.txt%7Bfont-family:'Pretendard',sans-serif;font-size:11px;font-weight:900;fill:%237c3aed;fill-opacity:0.13;%7D%3Cstyle%3E%3Cg transform='rotate(-10 90 45)'%3E%3Ctext x='-20' y='25' class='txt'%3E경산권 7월 창가청년미래총회%3C/text%3E%3Ctext x='70' y='70' class='txt'%3E경산권 7월 창가청년미래총회%3C/text%3E%3C/g%3E%3C/svg%3E"),
                 var(--bg-gradient);
             background-attachment: fixed;
         }
@@ -131,6 +130,39 @@
             border-color: #e2e8f0;
             text-decoration: line-through;
             transform: scale(0.96);
+        }
+
+        /* 5단계 전용 대진표 스타일 */
+        .antonym-block {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(124, 58, 237, 0.1);
+        }
+        .antonym-title-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .antonym-origin-label {
+            font-size: 0.8rem;
+            color: var(--point-pink);
+            font-weight: 700;
+            background: #ffe4e6;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+        .antonym-origin-word {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+        .antonym-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
         }
 
         .btn-wrap {
@@ -237,7 +269,16 @@
     </div>
 
     <div id="step5" class="step-container">
-        <h2 style="margin-bottom: 24px;">[5단계]<br>당신의 여정이 완성되었습니다.</h2>
+        <h2>[5단계]<br>마이너스 에너지를 넘어서기 위해 내가 원하는 힘은 무엇인가요?</h2>
+        <div class="sub-description">극복하고 싶은 에너지의 반대편에 있는 힘 중 하나를 각각 선택해 주세요.</div>
+        <div id="antonym-list-container"></div>
+        <div class="btn-wrap">
+            <button class="btn-next" id="btn5" onclick="goResult()" disabled>결과 확인하기</button>
+        </div>
+    </div>
+
+    <div id="step6" class="step-container">
+        <h2 style="margin-bottom: 24px;">당신의 여정이 완성되었습니다.</h2>
         
         <div class="result-section">
             <h3 style="color: var(--primary-purple);">✨ 나의 핵심가치 5</h3>
@@ -248,6 +289,11 @@
             <h3 style="color: var(--point-pink);">🔥 나의 극복과제 5</h3>
             <div class="result-words" id="final-challenges"></div>
         </div>
+
+        <div class="result-section" style="margin-top:16px;">
+            <h3 style="color: #059669;">✨ 마이너스 에너지를 넘어설 힘 5</h3>
+            <div class="result-words" id="final-powers"></div>
+        </div>
     </div>
 
 </div>
@@ -256,10 +302,35 @@
     const wordsStep1 = ["감사", "겸손", "공감", "꿈", "리더십", "믿음", "배려", "사랑", "사명", "생명", "성실", "성장", "성취", "신뢰", "신앙", "실행력", "안전", "열정", "용기", "우정", "유연성", "인내", "자비", "자신감", "자유", "자율성", "절제", "정의", "조화", "존경", "지혜", "진실", "질서", "창의성", "청렴", "평화", "행복", "협력", "희망"];
     const wordsStep3 = ["갈등", "거짓", "게으름", "결핍", "경솔", "경직", "공허", "교만", "낭비", "냉정함", "독단", "두려움", "모방", "무관심", "무기력", "무시", "무질서", "무책임", "반항", "방관", "배신", "변덕", "복수", "부패", "분노", "불균형", "불신", "불안", "불친절", "불행", "소외", "수동성", "수치", "슬픔", "시기", "시련", "실패", "약점", "어리석음", "열등감", "우유부단", "위협", "의심", "이기심", "잔인함", "절망", "조급함", "조롱", "죽음", "중독", "지루함", "지배", "집착", "탐욕", "편견", "포기", "폭력", "허영", "혼란", "회피"];
 
+    // 5단계용 반대 에너지 맵 데이터
+    const antonymsData = {
+        "갈등": ["평화", "조화", "협력"], "거짓": ["진실", "정직", "신뢰"], "게으름": ["성실", "근면", "실행력"],
+        "결핍": ["감사", "충만", "만족"], "경솔": ["신중함", "지혜", "절제"], "경직": ["유연성", "적응력", "융통성"],
+        "공허": ["사명", "의미", "희망"], "교만": ["겸손", "존중", "배려"], "낭비": ["절약", "절제", "책임"],
+        "냉정함": ["공감", "따뜻함", "배려"], "독단": ["협력", "경청", "존중"], "두려움": ["용기", "담대함", "믿음"],
+        "모방": ["창의성", "독창성", "상상력"], "무관심": ["사랑", "관심", "공감"], "무기력": ["열정", "의지", "실행력"],
+        "무시": ["존중", "인정", "배려"], "무질서": ["질서", "규칙", "정리정돈"], "무책임": ["책임", "사명", "성실"],
+        "반항": ["순종", "존중", "협력"], "방관": ["참여", "섬김", "공헌"], "배신": ["신뢰", "충성", "의리"],
+        "변덕": ["한결같음", "신실", "성실"], "복수": ["용서", "자비", "관용"], "부패": ["청렴", "정직", "투명함"],
+        "분노": ["온유", "절제", "평안"], "불균형": ["조화", "균형감각", "중용"], "불신": ["믿음", "신뢰", "확신"],
+        "불안": ["평안", "믿음", "안정"], "불친절": ["친절", "배려", "온유"], "불행": ["행복", "감사", "기쁨"],
+        "소외": ["공동체", "동행", "우정"], "수동성": ["자율성", "주도성", "실천력"], "수치": ["존엄", "자존감", "용기"],
+        "슬픔": ["희망", "위로", "기쁨"], "시기": ["감사", "사랑", "축복"], "시련": ["인내", "끈기", "희망"],
+        "실패": ["성장", "도전", "성취감"], "약점": ["강점", "성장", "잠재력"], "어리석음": ["지혜", "통찰력", "배움"],
+        "열등감": ["자신감", "자존감", "성장"], "우유부단": ["결단력", "의지", "실행력"], "위협": ["안전", "평화", "보호"],
+        "의심": ["믿음", "신뢰", "확신"], "이기심": ["나눔", "섬김", "배려"], "잔인함": ["자비", "긍휼", "사랑"],
+        "절망": ["희망", "소망", "꿈"], "조급함": ["인내", "기다림", "평안"], "조롱": ["격려", "존중", "칭찬"],
+        "죽음": ["생명", "희망", "사랑"], "중독": ["절제", "자유", "자제"], "지루함": ["열정", "호기심", "즐거움"],
+        "지배": ["섬김", "존중", "협력"], "집착": ["내려놓음", "자유", "절제"], "탐욕": ["만족", "감사", "나눔"],
+        "편견": ["이해", "공감", "열린마음"], "포기": ["도전", "끈기", "성취감"], "폭력": ["평화", "온유", "사랑"],
+        "허영": ["겸손", "진정성", "자존감"], "혼란": ["질서", "지혜", "방향성"], "회피": ["до전", "시도", "성취감"]
+    };
+
     let selectedStep1 = [];
     let removedStep2 = [];
     let selectedStep3 = [];
     let removedStep4 = [];
+    let chosenPowers5 = {}; // { "편견": "이해", "불안": "평안" ... } 구조로 저장
 
     function shuffle(array) {
         const shuffled = [...array];
@@ -367,15 +438,77 @@
         renderGrid("grid4", selectedStep3, handleStep4Select);
     }
 
+    // 5단계 빌드 함수
     function goStep5() {
         if (removedStep4.length !== 5) return;
         switchPage("step4", "step5");
 
+        const targetEnergies = selectedStep3.filter(w => !removedStep4.includes(w)); // 남은 5개 과제
+        const container = document.getElementById("antonym-list-container");
+        container.innerHTML = "";
+        chosenPowers5 = {}; 
+
+        targetEnergies.forEach(energy => {
+            const block = document.createElement("div");
+            block.className = "antonym-block";
+
+            const titleBox = document.createElement("div");
+            titleBox.className = "antonym-title-box";
+            
+            const label = document.createElement("span");
+            label.className = "antonym-origin-label";
+            label.textContent = "극복과제";
+
+            const mainWord = document.createElement("span");
+            mainWord.className = "antonym-origin-word";
+            mainWord.textContent = `"${energy}"`;
+
+            titleBox.appendChild(label);
+            titleBox.appendChild(mainWord);
+            block.appendChild(titleBox);
+
+            const grid = document.createElement("div");
+            grid.className = "antonym-grid";
+
+            const options = antonymsData[energy] || ["성장", "지혜", "용기"]; // 폴백 방어코드
+            options.forEach(opt => {
+                const optDiv = document.createElement("div");
+                optDiv.className = "word-item";
+                optDiv.textContent = opt;
+
+                optDiv.addEventListener("click", () => {
+                    // 해당 블록 내의 다른 선택 초기화
+                    const siblings = grid.querySelectorAll(".word-item");
+                    siblings.forEach(s => s.classList.remove("selected"));
+
+                    // 현재 아이템 선택
+                    optDiv.classList.add("selected");
+                    chosenPowers5[energy] = opt;
+
+                    // 5개 그룹이 모두 1개씩 골라졌는지 체킹
+                    const currentSelectedCount = Object.keys(chosenPowers5).length;
+                    toggleButton("btn5", currentSelectedCount === 5);
+                });
+
+                grid.appendChild(optDiv);
+            });
+
+            block.appendChild(grid);
+            container.appendChild(block);
+        });
+    }
+
+    function goResult() {
+        if (Object.keys(chosenPowers5).length !== 5) return;
+        switchPage("step5", "step6");
+
         const finalCoreValues = selectedStep1.filter(w => !removedStep2.includes(w));
         const finalChallenges = selectedStep3.filter(w => !removedStep4.includes(w));
+        const finalPowers = Object.values(chosenPowers5);
 
         document.getElementById("final-core-values").textContent = finalCoreValues.join("  ·  ");
         document.getElementById("final-challenges").textContent = finalChallenges.join("  ·  ");
+        document.getElementById("final-powers").textContent = finalPowers.join("  ·  ");
     }
 
     function switchPage(fromId, toId) {
